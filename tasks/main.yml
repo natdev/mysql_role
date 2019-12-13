@@ -1,0 +1,21 @@
+---
+  - name: Installation mysql
+    become: yes
+    apt:
+      name: mysql
+      state: latest
+      update_cache: yes
+  - name: Lancer mysql
+    become:  yes
+    service: name=mysql state=started enabled=true
+  - name: Supprimer tous les utilisateurs anonymes
+    mysql_user:
+      name: ''
+      host_all: yes
+      state: absent
+  - name: Creation d'un utilisateur avec tous les privilèges
+    mysql_user:
+      name: invite
+      password: 12345
+      priv: '*.*:All'
+      state: present
